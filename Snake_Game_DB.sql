@@ -1,0 +1,23 @@
+CREATE DATABASE Snake_Game
+GO
+
+USE Snake_Game
+GO
+
+CREATE TABLE Jugadores(
+id INT PRIMARY KEY NOT NULL,
+Nombre VARCHAR(100),
+Pseudonimo VARCHAR(100),
+fecha_registro DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Partidas (
+id INT PRIMARY KEY NOT NULL,
+id_jugador INT FOREIGN KEY REFERENCES Jugadores(id),
+fecha_inicio DATETIME NOT NULL,
+fecha_fin DATETIME NOT NULL,
+puntaje INT NOT NULL
+);
+
+SELECT * FROM Jugadores
+SELECT * FROM Partidas
