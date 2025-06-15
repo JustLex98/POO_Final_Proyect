@@ -7,6 +7,7 @@ import modelo.Serpiente;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class PanelJuego extends JPanel {
 
@@ -23,56 +24,59 @@ public class PanelJuego extends JPanel {
 
         Dimension tamanoPanel = new Dimension(anchoTablero * TAMANO_CELDA, altoTablero * TAMANO_CELDA);
         setPreferredSize(tamanoPanel);
-        setBackground(Color.BLACK);
+        setBackground(new Color(30, 30, 30));
         setFocusable(true);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-
         super.paintComponent(g);
+        dibujarCuadricula(g);
 
         if (controlador.isEnJuego()) {
             dibujarJuego(g);
         } else {
             mostrarMensaje(g);
         }
+
+        dibujarPuntaje(g);
+    }
+
+    private void dibujarCuadricula(Graphics g) {
+        g.setColor(new Color(50, 50, 50));
+        for (int x = 0; x < getWidth(); x += TAMANO_CELDA) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+        for (int y = 0; y < getHeight(); y += TAMANO_CELDA) {
+            g.drawLine(0, y, getWidth(), y);
+        }
     }
 
     private void dibujarJuego(Graphics g) {
-        if (serpiente == null) {
-            System.out.println("[dibujarJuego] ¡ERROR! La serpiente es nula.");
-            return;
-        }
-        java.util.List<Punto> cuerpoSerpiente = serpiente.getCuerpo();
-
+        List<Punto> cuerpoSerpiente = serpiente.getCuerpo();
+        
         g.setColor(Color.GREEN);
-        for (Punto p : cuerpoSerpiente) {
-            if (p == null) {
-                continue;
-            }
-            int x_pixel = p.getX() * TAMANO_CELDA;
-            int y_pixel = p.getY() * TAMANO_CELDA;
-            g.fillRect(x_pixel, y_pixel, TAMANO_CELDA, TAMANO_CELDA);
+        for (int i = 1; i < cuerpoSerpiente.size(); i++) {
+            Punto p = cuerpoSerpiente.get(i);
+            g.fillRect(p.getX() * TAMANO_CELDA, p.getY() * TAMANO_CELDA, TAMANO_CELDA, TAMANO_CELDA);
         }
 
-        g.setColor(new Color(0, 150, 0));
+        g.setColor(new Color(0, 128, 0));
         Punto cabeza = serpiente.getCabeza();
         g.fillRect(cabeza.getX() * TAMANO_CELDA, cabeza.getY() * TAMANO_CELDA, TAMANO_CELDA, TAMANO_CELDA);
 
-        if (comida == null) {
-            return;
-        }
-        Punto posComida = comida.getPosicion();
-        if (posComida == null) {
-            return;
-        }
-
         g.setColor(Color.RED);
-        int comida_x_pixel = posComida.getX() * TAMANO_CELDA;
-        int comida_y_pixel = posComida.getY() * TAMANO_CELDA;
-        g.fillOval(comida_x_pixel, comida_y_pixel, TAMANO_CELDA, TAMANO_CELDA);
+        Punto posComida = comida.getPosicion();
+        g.fillOval(posComida.getX() * TAMANO_CELDA, posComida.getY() * TAMANO_CELDA, TAMANO_CELDA, TAMANO_CELDA);
+    }
 
+    private void dibujarPuntaje(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Consolas", Font.BOLD, 20));
+
+        String textoPuntaje = "Puntaje: " + controlador.getPuntaje();
+
+        g.drawString(textoPuntaje, 10, 20);
     }
 
     private void mostrarMensaje(Graphics g) {
@@ -81,15 +85,14 @@ public class PanelJuego extends JPanel {
         FontMetrics fm = getFontMetrics(g.getFont());
         String mensaje;
 
-        if (controlador.getPuntaje() > 0) {
+        if (controlador.getPuntaje() > 0 && !controlador.isEnJuego()) {
             mensaje = "Game Over";
         } else {
-            mensaje = "Press any arrow key to start";
+            mensaje = "Presione cualquier flecha para iniciar";
         }
 
         int x = (getWidth() - fm.stringWidth(mensaje)) / 2;
         int y = getHeight() / 2;
-
         g.drawString(mensaje, x, y);
     }
 }

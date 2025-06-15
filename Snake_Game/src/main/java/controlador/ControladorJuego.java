@@ -61,7 +61,6 @@ public class ControladorJuego implements ActionListener, KeyListener {
             puntaje++;
             serpiente.crecer();
             generarNuevaComida();
-            ventana.setTitle("Snake Game | Puntaje: " + puntaje);
         }
     }
 
