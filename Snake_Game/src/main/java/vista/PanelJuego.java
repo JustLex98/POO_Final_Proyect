@@ -40,17 +40,11 @@ public class PanelJuego extends JPanel {
     }
 
     private void dibujarJuego(Graphics g) {
-        System.out.println("[dibujarJuego] Empezando a dibujar...");
         if (serpiente == null) {
             System.out.println("[dibujarJuego] ¡ERROR! La serpiente es nula.");
             return;
         }
         java.util.List<Punto> cuerpoSerpiente = serpiente.getCuerpo();
-        if (cuerpoSerpiente.isEmpty()) {
-            System.out.println("[dibujarJuego] ¡ADVERTENCIA! El cuerpo de la serpiente está vacío.");
-        } else {
-            System.out.println("[dibujarJuego] La serpiente tiene " + cuerpoSerpiente.size() + " segmentos.");
-        }
 
         g.setColor(Color.GREEN);
         for (Punto p : cuerpoSerpiente) {
