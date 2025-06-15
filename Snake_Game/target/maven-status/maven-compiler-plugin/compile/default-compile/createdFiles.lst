@@ -1,4 +1,5 @@
 modelo\Serpiente.class
+persistencia\DatabaseManager.class
 modelo\Punto.class
 modelo\Tablero.class
 modelo\Serpiente$1.class

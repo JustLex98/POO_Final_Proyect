@@ -10,4 +10,26 @@
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>com.mycompany.snake_game.Snake_Game</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.8.1.jre11</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>main.main</mainClass>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.basedir}/libs/mssql-jdbc-12.8.1.jre11.jar</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
