@@ -102,7 +102,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
             System.out.println(dbManager.getReporteMaxPuntaje());
             System.out.println(dbManager.getReporteMasJuegos());
         } else {
-            System.out.println("No se guardó la partida porque no se definió un jugador.");
+            System.out.println("No ha guardado la partida porque no se definio un jugador.");
         }
     }
 
