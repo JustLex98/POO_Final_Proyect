@@ -17,6 +17,7 @@ public class ReportsPanel extends JPanel {
     public ReportsPanel(GameFrame frame, DatabaseManager manager) {
         this.gameFrame = frame;
         this.dbManager = manager; // <-- REFERENCIA GUARDADA
+        setPreferredSize(new Dimension(850, 575));
 
         setLayout(new BorderLayout(15, 15));
         setBackground(Theme.COLOR_FONDO);

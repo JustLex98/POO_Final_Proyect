@@ -19,6 +19,7 @@ public class MainMenuPanel extends JPanel {
         
         cargarRecursos();
         
+        setPreferredSize(new Dimension(850, 575));        
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 

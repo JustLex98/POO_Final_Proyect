@@ -7,6 +7,7 @@ import java.awt.*;
 public class RegisterPanel extends JPanel {
 
     public RegisterPanel(GameFrame frame, DatabaseManager manager) {
+        setPreferredSize(new Dimension(850, 575));
         setLayout(new GridBagLayout());
         setBackground(Theme.COLOR_FONDO);
         GridBagConstraints gbc = new GridBagConstraints();

@@ -41,7 +41,7 @@ public class GameFrame extends JFrame {
         this.setTitle("Snake Game");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(34 * 25, 23 * 25 + 38);
+        this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
