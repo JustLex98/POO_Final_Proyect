@@ -2,12 +2,13 @@ Programación Orientada a Objetos
 Proyecto final – Ciclo 2025-01
 
 Objetivo
- Desarrollar una aplicación en la que los estudiantes pongan en práctica los conocimientos acerca
+> Desarrollar una aplicación en la que los estudiantes pongan en práctica los conocimientos acerca
 del lenguaje Java, aprendidos durante el semestre.
- Desarrollo de las habilidades de solución de problemas, creatividad y trabajo en equipo.
- Implementación de entorno gráfico y de acceso a bases de datos.
+> Desarrollo de las habilidades de solución de problemas, creatividad y trabajo en equipo.
+> Implementación de entorno gráfico y de acceso a bases de datos.
 
 Definición del problema
+
 Programar, en un entorno de ventanas, su propia versión del popular juego de video conocido como
 Snake, surgido en la década de los 70. Se juega en modalidad individual, y el jugador controla a una
 serpiente que se desplaza a velocidad constante dentro de un plano delimitado, recogiendo premios y
@@ -21,6 +22,7 @@ entorno o con otro objeto que no sea un premio.
 
 Requisitos para el diseño de su aplicación
 Su aplicación deberá cumplir con los siguientes requisitos:
+
 a) Registrar a los jugadores, con su nombre y pseudónimo.
 
 b) Permitir que el jugador de inicio a un juego.
@@ -30,7 +32,7 @@ abajo.
 
 d) Comer premios cuando los alcanza con su cabeza.
 
-e) Crecer cada vez que un premio es cómico.
+e) Crecer cada vez que un premio es comido.
 
 f) Aumentar un puntaje cada vez que un premio es comido. El puntaje debe iniciar en cero, ir en
 aumento y ser visible durante todo el juego.
@@ -46,4 +48,4 @@ o Diversos tipos de reportes acerca de consultas que pueden realizarse a la base
 como: quién ha jugado más juegos, quién ha tenido el puntaje más alto, la cantidad de
 tiempo invertida en jugar por un mismo jugador, etc.
 
-i) El motor de la base de datos debe ser MS SQL Server.
+i) El motor de la base de datos debe ser MSSQL Server.
