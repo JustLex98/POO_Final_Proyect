@@ -26,7 +26,7 @@ public class DatabaseManager {
 
     public void registrarJugador(String nombre, String pseudonimo) {
         if (getJugadorId(pseudonimo) != -1) {
-            System.out.println("Error: El pseudónimo '" + pseudonimo + "' ya está registrado.");
+            System.out.println("Error: El pseudonimo '" + pseudonimo + "' ya esta registrado.");
             return;
         }
         String sql = "INSERT INTO Jugadores (nombre, pseudonimo) VALUES (?, ?)";
@@ -57,7 +57,7 @@ public class DatabaseManager {
     public void guardarPartida(String pseudonimo, LocalDateTime inicio, LocalDateTime fin, int puntaje) {
         int jugadorId = getJugadorId(pseudonimo);
         if (jugadorId == -1) {
-            System.err.println("Error al guardar partida: El jugador con pseudónimo '" + pseudonimo + "' no existe.");
+            System.err.println("Error al guardar partida: El jugador con pseudonimo '" + pseudonimo + "' no existe.");
             return;
         }
 
@@ -78,7 +78,7 @@ public class DatabaseManager {
         String sql = "SELECT TOP 1 j.pseudonimo, p.puntaje FROM Partidas p JOIN Jugadores j ON p.id_jugador = j.id ORDER BY p.puntaje DESC";
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
-                return "Puntaje Más Alto: " + rs.getInt("puntaje") + " (Jugador: " + rs.getString("pseudonimo") + ")";
+                return "Puntaje mas alto: " + rs.getInt("puntaje") + " (Jugador: " + rs.getString("pseudonimo") + ")";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,4 +112,19 @@ public class DatabaseManager {
         }
         return "No se encontraron partidas para el jugador '" + pseudonimo + "'.";
     }
+    public List<String> getTodosLosPseudonimos() {
+    List<String> pseudonimos = new ArrayList<>();
+    String sql = "SELECT pseudonimo FROM Jugadores ORDER BY pseudonimo";
+    try (Connection conn = getConnection();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+        
+        while (rs.next()) {
+            pseudonimos.add(rs.getString("pseudonimo"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return pseudonimos;
+}
 }

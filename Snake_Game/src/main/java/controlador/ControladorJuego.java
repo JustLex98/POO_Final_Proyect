@@ -1,15 +1,16 @@
 package controlador;
 
 import modelo.*;
-import persistencia.DatabaseManager; // <-- NUEVO: Importamos el gestor de la BD
-import vista.*;
+import persistencia.DatabaseManager;
+import vista.GameFrame;
+import vista.PanelJuego;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.time.LocalDateTime; // <-- NUEVO: Para manejar fechas y horas
+import java.time.LocalDateTime;
 
 public class ControladorJuego implements ActionListener, KeyListener {
 
@@ -17,41 +18,42 @@ public class ControladorJuego implements ActionListener, KeyListener {
     private static final int ALTO_TABLERO = 23;
     private static final int DELAY = 150;
 
-    // --- ATRIBUTOS ---
-    
-    // Modelo
     private Tablero tablero;
     private Serpiente serpiente;
     private Comida comida;
-
-    // Vista
-    private VentanaPrincipal ventana;
+    
     private PanelJuego panelJuego;
 
-    // Controlador
     private Timer timer;
     private boolean enJuego = false;
     private int puntaje = 0;
 
-    private DatabaseManager dbManager; // Instancia del gestor de BD
-    private String pseudonimoJugadorActual; // Para saber quién está jugando
-    private LocalDateTime horaInicioJuego; // Para registrar cuándo empezó la partida
+    private DatabaseManager dbManager;
+    private String pseudonimoJugadorActual;
+    private LocalDateTime horaInicioJuego;
 
     public ControladorJuego() {
-        this.dbManager = new DatabaseManager(); 
-
+        this.dbManager = new DatabaseManager();
         this.tablero = new Tablero(ANCHO_TABLERO, ALTO_TABLERO);
-        this.serpiente = new Serpiente(new Punto(ANCHO_TABLERO / 2, ALTO_TABLERO / 2));
-        this.comida = new Comida(new Punto(5, 5));
-        generarNuevaComida(); 
-
-        this.panelJuego = new PanelJuego(serpiente, comida, tablero.getAncho(), tablero.getAlto(), this);
-        this.ventana = new VentanaPrincipal(panelJuego);
-
-        this.panelJuego.addKeyListener(this); 
-        this.panelJuego.setFocusable(true);
+        
+        this.serpiente = new Serpiente(new Punto(0, 0));
+        this.comida = new Comida(new Punto(0, 0));
+        
         this.timer = new Timer(DELAY, this);
-        this.timer.start();
+    }
+
+    public void iniciarNuevaPartida(String pseudonimo) {
+        this.pseudonimoJugadorActual = pseudonimo;
+        this.horaInicioJuego = LocalDateTime.now();
+        this.puntaje = 0;
+
+        this.serpiente = new Serpiente(new Punto(ANCHO_TABLERO / 2, ALTO_TABLERO / 2));
+        generarNuevaComida();
+
+        enJuego = false;
+        timer.start();
+        
+        System.out.println("Partida iniciada para el jugador: " + pseudonimo);
     }
     
     @Override
@@ -61,7 +63,9 @@ public class ControladorJuego implements ActionListener, KeyListener {
             verificarColisiones();
             verificarComida();
         }
-        panelJuego.repaint();
+        if (panelJuego != null) {
+            panelJuego.repaint();
+        }
     }
 
     private void verificarComida() {
@@ -79,10 +83,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
     }
 
     private void verificarColisiones() {
-        if (serpiente.verificarColisionPropia()) {
-            finDelJuego();
-        }
-        if (tablero.verificarColisionPared(serpiente.getCabeza())) {
+        if (serpiente.verificarColisionPropia() || tablero.verificarColisionPared(serpiente.getCabeza())) {
             finDelJuego();
         }
     }
@@ -91,65 +92,59 @@ public class ControladorJuego implements ActionListener, KeyListener {
         enJuego = false;
         timer.stop();
         
-
-        LocalDateTime horaFinJuego = LocalDateTime.now(); 
-
+        LocalDateTime horaFinJuego = LocalDateTime.now();
         if (pseudonimoJugadorActual != null && !pseudonimoJugadorActual.isEmpty()) {
-            System.out.println("Guardando partida para el jugador: " + pseudonimoJugadorActual);
             dbManager.guardarPartida(pseudonimoJugadorActual, horaInicioJuego, horaFinJuego, puntaje);
+            System.out.println("Partida guardada. Puntaje: " + puntaje);
+        }
 
-            System.out.println("--- Reportes Post-Partida ---");
-            System.out.println(dbManager.getReporteMaxPuntaje());
-            System.out.println(dbManager.getReporteMasJuegos());
-        } else {
-            System.out.println("No ha guardado la partida porque no se definio un jugador.");
+        JOptionPane.showMessageDialog(panelJuego, "¡Game Over! Puntaje final: " + puntaje, "Fin del Juego", JOptionPane.INFORMATION_MESSAGE);
+        
+        GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(panelJuego);
+        if (frame != null) {
+            frame.mostrarPanel("MENU");
         }
     }
-
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (!enJuego && timer.isRunning()) {
             enJuego = true;
-
-            this.pseudonimoJugadorActual = "PlayerTest";
-            this.horaInicioJuego = LocalDateTime.now();
-
-            dbManager.registrarJugador("Jugador de Prueba", this.pseudonimoJugadorActual);
-            
-            System.out.println("Iniciando partida para: " + this.pseudonimoJugadorActual);
         }
 
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_LEFT:
-                serpiente.setDireccion(Direccion.IZQUIERDA);
-                break;
-            case KeyEvent.VK_RIGHT:
-                serpiente.setDireccion(Direccion.DERECHA);
-                break;
-            case KeyEvent.VK_UP:
-                serpiente.setDireccion(Direccion.ARRIBA);
-                break;
-            case KeyEvent.VK_DOWN:
-                serpiente.setDireccion(Direccion.ABAJO);
-                break;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_LEFT -> serpiente.setDireccion(Direccion.IZQUIERDA);
+            case KeyEvent.VK_RIGHT -> serpiente.setDireccion(Direccion.DERECHA);
+            case KeyEvent.VK_UP -> serpiente.setDireccion(Direccion.ARRIBA);
+            case KeyEvent.VK_DOWN -> serpiente.setDireccion(Direccion.ABAJO);
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-    }
+    public void keyReleased(KeyEvent e) {}
 
+    public void setPanelJuego(PanelJuego panel) {
+        this.panelJuego = panel;
+        this.panelJuego.addKeyListener(this);
+        this.panelJuego.setFocusable(true);
+    }
+    
     public boolean isEnJuego() {
         return enJuego;
     }
 
     public int getPuntaje() {
         return puntaje;
+    }
+    
+    public Serpiente getSerpiente() {
+        return this.serpiente;
+    }
+
+    public Comida getComida() {
+        return this.comida;
     }
 }

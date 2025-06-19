@@ -19,5 +19,6 @@ fecha_fin DATETIME NOT NULL,
 puntaje INT NOT NULL
 );
 
+
 SELECT * FROM Jugadores
 SELECT * FROM Partidas
