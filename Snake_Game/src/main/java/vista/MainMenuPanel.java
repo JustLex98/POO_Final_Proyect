@@ -78,10 +78,21 @@ public class MainMenuPanel extends JPanel {
         // --- Lógica de los botones... (sin cambios) ---
         playButton.addActionListener(e -> {
             String pseudonimo = pseudoField.getText().trim();
+            
             if (pseudonimo.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, ingresa un pseudónimo.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else { gameFrame.iniciarJuego(pseudonimo); }
-        });
+            } 
+            else{ 
+                // Nuevo: Selección de escenario con JOptionPane
+                String[] opciones = { "Bosque.png", "Cueva.png", "Espacio.png" };
+                String seleccion = (String) JOptionPane.showInputDialog(
+                this, "Selecciona un escenario:", "Escenario", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]
+                );
+            if (seleccion != null){
+                gameFrame.iniciarJuego(pseudonimo, seleccion);
+            }
+            }
+            });
         registerButton.addActionListener(e -> gameFrame.mostrarPanel("REGISTRO"));
         reportsButton.addActionListener(e -> gameFrame.mostrarPanel("REPORTES"));
         exitButton.addActionListener(e -> System.exit(0));

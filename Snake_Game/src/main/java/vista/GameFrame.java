@@ -26,14 +26,10 @@ public class GameFrame extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         mainMenuPanel = new MainMenuPanel(this, dbManager);
-        panelJuego = new PanelJuego(controlador, 34, 23);
         registerPanel = new RegisterPanel(this, dbManager);
         reportsPanel = new ReportsPanel(this, dbManager);
 
-        controlador.setPanelJuego(panelJuego);
-
         mainPanel.add(mainMenuPanel, "MENU");
-        mainPanel.add(panelJuego, "JUEGO");
         mainPanel.add(registerPanel, "REGISTRO");
         mainPanel.add(reportsPanel, "REPORTES");
 
@@ -50,9 +46,14 @@ public class GameFrame extends JFrame {
         cardLayout.show(mainPanel, nombrePanel);
     }
 
-    public void iniciarJuego(String pseudonimo) {
+    public void iniciarJuego(String pseudonimo, String escenario) {
         controlador.iniciarNuevaPartida(pseudonimo);
+        
+        panelJuego = new PanelJuego(controlador, 34, 23, escenario);
+        controlador.setPanelJuego(panelJuego);
+        mainPanel.add(panelJuego, "JUEGO");
         cardLayout.show(mainPanel, "JUEGO");
         panelJuego.requestFocusInWindow();
+        
     }
 }

@@ -9,39 +9,37 @@ import java.util.Random;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class PanelJuego extends JPanel {
 
     private static final int TAMANO_CELDA = 25;
     private ControladorJuego controlador;
-    private List<Star> estrellas;
+    private BufferedImage fondoEscenario;
 
-    private static class Star {
-        int x, y, size;
-        public Star(int x, int y, int size) { this.x = x; this.y = y; this.size = size; }
-        public int getX() { return x; }
-        public int getY() { return y; }
-        public int getSize() { return size; }
-    }
+    
 
-    public PanelJuego(ControladorJuego controlador, int anchoTablero, int altoTablero) {
+    public PanelJuego(ControladorJuego controlador, int anchoTablero, int altoTablero, String nombreEscenario) {
         this.controlador = controlador;
         Dimension tamanoPanel = new Dimension(anchoTablero * TAMANO_CELDA, altoTablero * TAMANO_CELDA);
         setPreferredSize(tamanoPanel);
         setBackground(Theme.COLOR_FONDO);
-        inicializarFondoEstrellado(anchoTablero * TAMANO_CELDA, altoTablero * TAMANO_CELDA);
+        fondoEscenario = cargarEscenario(nombreEscenario);
     }
     
-    private void inicializarFondoEstrellado(int ancho, int alto) {
-        estrellas = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 200; i++) {
-            int x = random.nextInt(ancho);
-            int y = random.nextInt(alto);
-            int size = random.nextInt(2) + 1;
-            estrellas.add(new Star(x, y, size));
+    private BufferedImage cargarEscenario(String nombreEscenario){
+        if (nombreEscenario == null || nombreEscenario.isEmpty()) return null;
+        try{
+            return ImageIO.read(getClass().getClassLoader().getResource("images/" + nombreEscenario));
+        }
+        catch(IOException | IllegalArgumentException e){
+            System.err.println("No se pudo cargar la imagen de fondo: " + nombreEscenario);
+            return null;
         }
     }
+    
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -49,9 +47,11 @@ public class PanelJuego extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        dibujarFondoEstrellado(g2d);
-        dibujarCuadricula(g2d);
+        if (fondoEscenario != null){
+            g2d.drawImage(fondoEscenario, 0, 0, getWidth(), getHeight(), this);
+        }
         
+        dibujarCuadricula(g2d);
         dibujarJuego(g2d);
         
         if (!controlador.isEnJuego()) {
@@ -61,13 +61,6 @@ public class PanelJuego extends JPanel {
         dibujarPuntaje(g2d);
     }
     
-    private void dibujarFondoEstrellado(Graphics2D g) {
-        g.setColor(new Color(255, 255, 255, 150));
-        for (Star star : estrellas) {
-            g.fillOval(star.getX(), star.getY(), star.getSize(), star.getSize());
-        }
-    }
-
     private void dibujarCuadricula(Graphics2D g) {
         g.setColor(Theme.COLOR_CUADRICULA);
         for (int x = 0; x < getWidth(); x += TAMANO_CELDA) {
