@@ -21,11 +21,12 @@ public class ControladorJuego implements ActionListener, KeyListener {
     private Tablero tablero;
     private Serpiente serpiente;
     private Comida comida;
-    
+
     private PanelJuego panelJuego;
 
     private Timer timer;
     private boolean enJuego = false;
+    private boolean isPaused = false;
     private int puntaje = 0;
 
     private DatabaseManager dbManager;
@@ -35,10 +36,8 @@ public class ControladorJuego implements ActionListener, KeyListener {
     public ControladorJuego() {
         this.dbManager = new DatabaseManager();
         this.tablero = new Tablero(ANCHO_TABLERO, ALTO_TABLERO);
-        
         this.serpiente = new Serpiente(new Punto(0, 0));
         this.comida = new Comida(new Punto(0, 0));
-        
         this.timer = new Timer(DELAY, this);
     }
 
@@ -46,16 +45,16 @@ public class ControladorJuego implements ActionListener, KeyListener {
         this.pseudonimoJugadorActual = pseudonimo;
         this.horaInicioJuego = LocalDateTime.now();
         this.puntaje = 0;
+        this.isPaused = false;
 
         this.serpiente = new Serpiente(new Punto(ANCHO_TABLERO / 2, ALTO_TABLERO / 2));
         generarNuevaComida();
 
         enJuego = false;
         timer.start();
-        
         System.out.println("Partida iniciada para el jugador: " + pseudonimo);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (enJuego) {
@@ -91,7 +90,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
     private void finDelJuego() {
         enJuego = false;
         timer.stop();
-        
+
         LocalDateTime horaFinJuego = LocalDateTime.now();
         if (pseudonimoJugadorActual != null && !pseudonimoJugadorActual.isEmpty()) {
             dbManager.guardarPartida(pseudonimoJugadorActual, horaInicioJuego, horaFinJuego, puntaje);
@@ -106,13 +105,38 @@ public class ControladorJuego implements ActionListener, KeyListener {
         }
     }
 
+    private void togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            timer.stop();
+            System.out.println("Juego en Pausa");
+        } else {
+            timer.start();
+            System.out.println("Juego Reanudado");
+        }
+        panelJuego.repaint();
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_P) {
+            if (enJuego) {
+                togglePause();
+            }
+            return;
+        }
+
+        if (isPaused) {
+            return;
+        }
+
         if (!enJuego && timer.isRunning()) {
             enJuego = true;
         }
 
-        switch (e.getKeyCode()) {
+        switch (key) {
             case KeyEvent.VK_LEFT -> serpiente.setDireccion(Direccion.IZQUIERDA);
             case KeyEvent.VK_RIGHT -> serpiente.setDireccion(Direccion.DERECHA);
             case KeyEvent.VK_UP -> serpiente.setDireccion(Direccion.ARRIBA);
@@ -134,6 +158,10 @@ public class ControladorJuego implements ActionListener, KeyListener {
     
     public boolean isEnJuego() {
         return enJuego;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     public int getPuntaje() {

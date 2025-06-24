@@ -1,7 +1,6 @@
 modelo\Punto.class
 modelo\Tablero.class
 vista\Theme.class
-vista\PanelJuego$Star.class
 modelo\Serpiente$1.class
 vista\ReportsPanel.class
 vista\StrokedLabel.class

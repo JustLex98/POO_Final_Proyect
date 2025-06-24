@@ -12,9 +12,9 @@ public final class Theme {
 
     public static final Color COLOR_SERPIENTE_VERDE = new Color(57, 255, 20);
     public static final Color COLOR_SERPIENTE_VERDE_OSCURO = new Color(11, 94, 0);
-    public static final Color COLOR_CABEZA_VERDE = new Color(21, 178, 0);
+    public static final Color COLOR_CABEZA_VERDE = new Color(0, 100, 0);
 
-    public static final Color COLOR_COMIDA = new Color(255, 0, 128);
+    public static final Color COLOR_COMIDA = new Color(255, 0, 0);
     
     public static final Color COLOR_TEXTO_PRINCIPAL = new Color(230, 230, 230);
     public static final Color COLOR_TEXTO_ACENTO = new Color(57, 255, 20);
