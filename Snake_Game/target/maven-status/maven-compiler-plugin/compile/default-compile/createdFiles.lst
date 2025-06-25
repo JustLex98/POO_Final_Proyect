@@ -11,6 +11,7 @@ vista\ReportsPanel.class
 vista\StrokedLabel.class
 vista\GameFrame.class
 persistencia\DatabaseManager.class
+Musica\EfectosSonidos.class
 controlador\ControladorJuego.class
 modelo\Direccion.class
 vista\ReportsPanel$1.class

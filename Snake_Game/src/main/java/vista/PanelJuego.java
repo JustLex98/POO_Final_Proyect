@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ControladorJuego;
 import modelo.*;
+import Musica.EfectosSonidos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,13 @@ public class PanelJuego extends JPanel {
     private static final int TAMANO_CELDA = 25;
     private ControladorJuego controlador;
     private BufferedImage fondoEscenario;
+    private EfectosSonidos sonido;
 
     
 
-    public PanelJuego(ControladorJuego controlador, int anchoTablero, int altoTablero, String nombreEscenario) {
+    public PanelJuego(ControladorJuego controlador, int anchoTablero, int altoTablero, String nombreEscenario, EfectosSonidos sonido) {
         this.controlador = controlador;
+        this.sonido = sonido;
         Dimension tamanoPanel = new Dimension(anchoTablero * TAMANO_CELDA, altoTablero * TAMANO_CELDA);
         setPreferredSize(tamanoPanel);
         setBackground(Theme.COLOR_FONDO);
@@ -130,5 +133,11 @@ public class PanelJuego extends JPanel {
         int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
         
         g.drawString(mensaje, x, y);
+    }
+    public void reproducirSonidoComer(){
+        sonido.playSound("comer.wav");
+    }
+    public void reproducirSonidoChocar(){
+        sonido.playSound("choque.wav");
     }
 }

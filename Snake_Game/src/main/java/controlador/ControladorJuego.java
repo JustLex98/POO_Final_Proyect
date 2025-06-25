@@ -73,6 +73,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
             puntaje++;
             serpiente.crecer();
             generarNuevaComida();
+            panelJuego.reproducirSonidoComer(); //Sonido al comer.
         }
     }
 
@@ -91,6 +92,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
     private void finDelJuego() {
         enJuego = false;
         timer.stop();
+        panelJuego.reproducirSonidoChocar();
         
         LocalDateTime horaFinJuego = LocalDateTime.now();
         if (pseudonimoJugadorActual != null && !pseudonimoJugadorActual.isEmpty()) {
@@ -102,7 +104,7 @@ public class ControladorJuego implements ActionListener, KeyListener {
         
         GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(panelJuego);
         if (frame != null) {
-            frame.mostrarPanel("MENU");
+            frame.volverAlMenu();
         }
     }
 

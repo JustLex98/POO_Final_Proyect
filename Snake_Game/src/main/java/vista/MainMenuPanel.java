@@ -7,15 +7,18 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import Musica.EfectosSonidos;
 
 public class MainMenuPanel extends JPanel {
 
     private GameFrame gameFrame;
     private BufferedImage backgroundImage;
     private Image logoImage;
+    private EfectosSonidos sonido;
 
-    public MainMenuPanel(GameFrame frame, DatabaseManager manager) {
+    public MainMenuPanel(GameFrame frame, DatabaseManager manager, EfectosSonidos sonido) {
         this.gameFrame = frame;
+        this.sonido = sonido;
         
         cargarRecursos();
         
@@ -96,6 +99,8 @@ public class MainMenuPanel extends JPanel {
         registerButton.addActionListener(e -> gameFrame.mostrarPanel("REGISTRO"));
         reportsButton.addActionListener(e -> gameFrame.mostrarPanel("REPORTES"));
         exitButton.addActionListener(e -> System.exit(0));
+         // Iniciar música del menú
+        sonido.playMusicLoop("menutheme.wav");
     }
 
     private void cargarRecursos() {
