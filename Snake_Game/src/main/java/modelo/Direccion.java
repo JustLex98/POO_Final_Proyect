@@ -1,4 +1,3 @@
-// Paquete: com.juego.snake.modelo
 package modelo;
 
 public enum Direccion {

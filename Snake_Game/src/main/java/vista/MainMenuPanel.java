@@ -28,15 +28,13 @@ public class MainMenuPanel extends JPanel {
         gameTitleLabel.setFont(new Font("Impact", Font.BOLD, 80));
         gameTitleLabel.setForeground(new Color(210, 255, 210));
         gameTitleLabel.setOutlineColor(Color.BLACK);
-        gameTitleLabel.setStrokeWidth(2); // Ajusta el grosor del borde si quieres
+        gameTitleLabel.setStrokeWidth(2);
 
-        // --- Logo como JLabel ---
         JLabel logoLabel = new JLabel();
         if (logoImage != null) {
             logoLabel.setIcon(new ImageIcon(logoImage));
         }
-
-        // --- Panel de Controles (sin cambios en su interior) ---
+        
         JPanel controlsPanel = new JPanel(new GridBagLayout());
         controlsPanel.setBackground(new Color(0, 0, 0, 180));
         controlsPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -65,7 +63,6 @@ public class MainMenuPanel extends JPanel {
         controlsPanel.add(reportsButton, gbcControls);
         controlsPanel.add(exitButton, gbcControls);
 
-        // --- Posicionamiento con GridBagConstraints ---
         gbc.gridy = 0; gbc.weighty = 0.3; gbc.anchor = GridBagConstraints.PAGE_END;
         add(gameTitleLabel, gbc);
 
@@ -75,7 +72,6 @@ public class MainMenuPanel extends JPanel {
         gbc.gridy = 2; gbc.weighty = 0.3; gbc.anchor = GridBagConstraints.PAGE_START;
         add(controlsPanel, gbc);
 
-        // --- Lógica de los botones... (sin cambios) ---
         playButton.addActionListener(e -> {
             String pseudonimo = pseudoField.getText().trim();
             if (pseudonimo.isEmpty()) {

@@ -1,8 +1,7 @@
-// Paquete: com.snakegame.modelo
 package modelo;
 
 public class Tablero {
-    // Las dimensiones están en "unidades" o "celdas", no en píxeles.
+
     private final int ancho;
     private final int alto;
 

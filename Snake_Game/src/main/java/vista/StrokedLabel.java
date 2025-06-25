@@ -22,13 +22,10 @@ public class StrokedLabel extends JLabel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        // Creamos una copia para no modificar el objeto Graphics original
         Graphics2D g2 = (Graphics2D) g.create();
 
-        // Activamos el antialiasing para texto suave
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        
-        // Obtenemos el texto y la fuente del propio JLabel
+
         String text = getText();
         Font font = getFont();
         g2.setFont(font);
@@ -37,7 +34,6 @@ public class StrokedLabel extends JLabel {
         int x = (getWidth() - fm.stringWidth(text)) / 2;
         int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 
-        // 1. Dibujamos el contorno negro
         g2.setColor(outlineColor);
         for (int i = -strokeWidth; i <= strokeWidth; i++) {
             for (int j = -strokeWidth; j <= strokeWidth; j++) {
@@ -47,11 +43,9 @@ public class StrokedLabel extends JLabel {
             }
         }
 
-        // 2. Dibujamos el texto principal encima
-        g2.setColor(getForeground()); // Usamos el color de texto definido para el JLabel
+        g2.setColor(getForeground());
         g2.drawString(text, x, y);
 
-        // Liberamos los recursos de la copia de Graphics
         g2.dispose();
     }
 }

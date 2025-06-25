@@ -16,14 +16,14 @@ public class PanelJuego extends JPanel {
     private static final int TAMANO_CELDA = 25;
     private ControladorJuego controlador;
     private final List<Point> estrellas;
-    private static final int NUMERO_ESTRELLAS = 200;
+    private static final int NUMERO_ESTRELLAS = 300;
 
     public PanelJuego(ControladorJuego controlador, int anchoTablero, int altoTablero) {
         this.controlador = controlador;
         this.estrellas = new ArrayList<>();
         Dimension tamanoPanel = new Dimension(anchoTablero * TAMANO_CELDA, altoTablero * TAMANO_CELDA);
         setPreferredSize(tamanoPanel);
-        setBackground(Theme.COLOR_FONDO); // Usando el color de fondo de tu Theme
+        setBackground(Theme.COLOR_FONDO); 
         generarEstrellas(tamanoPanel.width, tamanoPanel.height);
     }
 
@@ -82,7 +82,6 @@ public class PanelJuego extends JPanel {
         
         int arc = 10;
 
-        // Dibuja el cuerpo de la serpiente con un degradado usando los colores de tu Theme
         List<Punto> cuerpoSerpiente = serpiente.getCuerpo();
         for (int i = 1; i < cuerpoSerpiente.size(); i++) {
             Punto p = cuerpoSerpiente.get(i);
@@ -94,12 +93,10 @@ public class PanelJuego extends JPanel {
             g2d.fillRoundRect(x, y, TAMANO_CELDA, TAMANO_CELDA, arc, arc);
         }
 
-        // Dibuja la cabeza con el color sólido de tu Theme
         g2d.setColor(Theme.COLOR_CABEZA_VERDE);
         Punto cabeza = serpiente.getCabeza();
         g2d.fillRoundRect(cabeza.getX() * TAMANO_CELDA, cabeza.getY() * TAMANO_CELDA, TAMANO_CELDA, TAMANO_CELDA, arc, arc);
 
-        // Dibuja la comida con el color sólido de tu Theme
         g2d.setColor(Theme.COLOR_COMIDA);
         Punto posComida = comida.getPosicion();
         g2d.fillRoundRect(posComida.getX() * TAMANO_CELDA, posComida.getY() * TAMANO_CELDA, TAMANO_CELDA, TAMANO_CELDA, arc, arc);

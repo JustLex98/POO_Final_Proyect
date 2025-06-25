@@ -1,4 +1,3 @@
-// Paquete: com.snakegame.modelo
 package modelo;
 
 import java.util.Random;

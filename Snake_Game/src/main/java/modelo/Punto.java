@@ -1,4 +1,3 @@
-// Paquete: com.juego.snake.modelo
 package modelo;
 
 public class Punto {
@@ -10,7 +9,6 @@ public class Punto {
         this.y = y;
     }
 
-    // Getters para poder leer las coordenadas desde otras clases
     public int getX() {
         return x;
     }
@@ -19,7 +17,6 @@ public class Punto {
         return y;
     }
 
-    // Método útil para comparar dos puntos. Lo usaremos mucho.
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -11,12 +11,12 @@ import java.util.List;
 public class ReportsPanel extends JPanel {
 
     private GameFrame gameFrame;
-    private DatabaseManager dbManager; // <-- ATRIBUTO DECLARADO
+    private DatabaseManager dbManager; 
     private JComboBox<String> playerComboBox;
 
     public ReportsPanel(GameFrame frame, DatabaseManager manager) {
         this.gameFrame = frame;
-        this.dbManager = manager; // <-- REFERENCIA GUARDADA
+        this.dbManager = manager; 
         setPreferredSize(new Dimension(850, 575));
 
         setLayout(new BorderLayout(15, 15));
@@ -106,7 +106,6 @@ public class ReportsPanel extends JPanel {
 
     private void actualizarListaDeJugadores() {
         playerComboBox.removeAllItems();
-        // Ahora "this.dbManager" es visible y correcto aquí
         List<String> players = this.dbManager.getTodosLosPseudonimos(); 
         if (players.isEmpty()) {
             playerComboBox.addItem("No hay jugadores");
